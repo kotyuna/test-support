@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Тест: Technical & Customer Support | iGaming / Fintech</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, sans-serif; background: #f0f4f8; color: #1a1a2e; min-height: 100vh; }
+
+  .header { background: linear-gradient(135deg, #1F4E79 0%, #2E75B6 100%); color: white; padding: 32px 20px; text-align: center; }
+  .header h1 { font-size: clamp(20px, 4vw, 28px); margin-bottom: 8px; }
+  .header p { font-size: 15px; opacity: 0.9; }
+  .badges { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 16px; }
+  .badge { background: rgba(255,255,255,0.2); border-radius: 20px; padding: 4px 14px; font-size: 13px; }
+
+  .container { max-width: 760px; margin: 0 auto; padding: 24px 16px 60px; }
+
+  .progress-bar-wrap { background: #dce8f5; border-radius: 8px; height: 8px; margin: 20px 0 8px; }
+  .progress-bar { background: #2E75B6; height: 8px; border-radius: 8px; transition: width 0.4s; }
+  .progress-label { font-size: 13px; color: #555; text-align: right; margin-bottom: 20px; }
+
+  .question-card { background: white; border-radius: 14px; padding: 24px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); border: 1px solid #e0ecf7; }
+  .q-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 18px; }
+  .q-num { background: #1F4E79; color: white; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+  .q-text { font-size: 16px; font-weight: 600; line-height: 1.5; color: #1a1a2e; }
+  .q-block-label { font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: #2E75B6; margin-bottom: 14px; }
+
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .option { display: flex; align-items: flex-start; gap: 12px; padding: 12px 16px; border: 1.5px solid #dce8f5; border-radius: 10px; cursor: pointer; transition: all 0.18s; background: white; }
+  .option:hover:not(.selected):not(.correct):not(.wrong) { border-color: #2E75B6; background: #f0f7ff; }
+  .option.selected { border-color: #2E75B6; background: #e8f2fc; }
+  .option.correct { border-color: #27ae60; background: #eafaf1; }
+  .option.wrong { border-color: #e74c3c; background: #fdf2f2; }
+  .option-letter { width: 28px; height: 28px; border-radius: 50%; background: #f0f4f8; border: 1.5px solid #c5d8ec; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: #1F4E79; flex-shrink: 0; transition: all 0.18s; }
+  .option.selected .option-letter { background: #2E75B6; color: white; border-color: #2E75B6; }
+  .option.correct .option-letter { background: #27ae60; color: white; border-color: #27ae60; }
+  .option.wrong .option-letter { background: #e74c3c; color: white; border-color: #e74c3c; }
+  .option-text { font-size: 14px; line-height: 1.5; color: #2c2c2c; padding-top: 3px; }
+  .option.correct .option-text { color: #1d6b3e; font-weight: 500; }
+  .option.wrong .option-text { color: #a93226; }
+
+  .feedback { margin-top: 12px; padding: 10px 14px; border-radius: 8px; font-size: 13px; line-height: 1.5; display: none; }
+  .feedback.show { display: block; }
+  .feedback.ok { background: #eafaf1; color: #1d6b3e; border-left: 3px solid #27ae60; }
+  .feedback.fail { background: #fdf2f2; color: #922b21; border-left: 3px solid #e74c3c; }
+
+  .nav { display: flex; gap: 12px; margin-top: 28px; justify-content: flex-end; flex-wrap: wrap; }
+  .btn { padding: 12px 28px; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.18s; }
+  .btn-primary { background: #1F4E79; color: white; }
+  .btn-primary:hover { background: #163b5c; }
+  .btn-secondary { background: white; color: #1F4E79; border: 1.5px solid #c5d8ec; }
+  .btn-secondary:hover { background: #f0f7ff; }
+  .btn-check { background: #2E75B6; color: white; }
+  .btn-check:hover { background: #1F4E79; }
+
+  .result-card { background: white; border-radius: 16px; padding: 40px 28px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+  .result-icon { font-size: 60px; margin-bottom: 16px; }
+  .result-score { font-size: 48px; font-weight: 800; margin-bottom: 8px; }
+  .result-label { font-size: 18px; color: #555; margin-bottom: 24px; }
+  .result-pass { color: #27ae60; }
+  .result-fail { color: #e74c3c; }
+  .result-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 24px 0; }
+  .stat { background: #f0f4f8; border-radius: 10px; padding: 14px; }
+  .stat-val { font-size: 24px; font-weight: 700; color: #1F4E79; }
+  .stat-lbl { font-size: 12px; color: #777; margin-top: 2px; }
+  .restart-btn { background: #1F4E79; color: white; border: none; padding: 14px 36px; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 8px; }
+  .restart-btn:hover { background: #163b5c; }
+
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  .start-card { background: white; border-radius: 16px; padding: 36px 28px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+  .start-card h2 { font-size: 22px; margin-bottom: 14px; color: #1F4E79; }
+  .start-card p { font-size: 15px; color: #555; margin-bottom: 10px; line-height: 1.6; }
+  .start-list { text-align: left; background: #f0f7ff; border-radius: 10px; padding: 16px 20px; margin: 20px 0; }
+  .start-list li { font-size: 14px; color: #333; margin-bottom: 8px; padding-left: 4px; }
+  .start-btn { background: #1F4E79; color: white; border: none; padding: 14px 40px; border-radius: 12px; font-size: 17px; font-weight: 700; cursor: pointer; margin-top: 4px; }
+  .start-btn:hover { background: #163b5c; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🎓 Тест: Technical & Customer Support</h1>
+  <p>iGaming / Fintech / Payments — підготовка до співбесіди</p>
+  <div class="badges">
+    <span class="badge">📋 30 питань</span>
+    <span class="badge">⏱️ ~30 хвилин</span>
+    <span class="badge">✅ Прохідний бал: 22/30</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <div id="screen-start" class="screen active">
+    <div class="start-card">
+      <h2>Перед початком тесту</h2>
+      <p>Цей тест перевіряє знання, необхідні для роботи на позиціях Support Engineer, Payments Specialist, Anti-Fraud Manager та Customer Support у сфері iGaming та Fintech.</p>
+      <div class="start-list">
+        <ul style="list-style: none; padding: 0;">
+          <li>📌 Блок 1 (Q1–8): iGaming та платіжні системи</li>
+          <li>📌 Блок 2 (Q9–20): Інструменти та технічна база</li>
+          <li>📌 Блок 3 (Q21–30): Процеси, SLA та Anti-Fraud</li>
+          <li>✅ Правильна відповідь показується одразу після вибору</li>
+          <li>🏆 Для успіху потрібно 22+ правильних відповіді</li>
+        </ul>
+      </div>
+      <button class="start-btn" onclick="startTest()">Розпочати тест →</button>
+    </div>
+  </div>
+
+  <div id="screen-test" class="screen">
+    <div class="progress-bar-wrap"><div class="progress-bar" id="progress-bar" style="width:0%"></div></div>
+    <div class="progress-label" id="progress-label">Питання 1 з 30</div>
+    <div id="question-area"></div>
+    <div class="nav">
+      <button class="btn btn-secondary" id="btn-prev" onclick="prevQ()" style="display:none">← Назад</button>
+      <button class="btn btn-check" id="btn-check" onclick="checkAnswer()" style="display:none">Перевірити</button>
+      <button class="btn btn-primary" id="btn-next" onclick="nextQ()">Далі →</button>
+      <button class="btn btn-primary" id="btn-finish" onclick="showResult()" style="display:none">Завершити тест</button>
+    </div>
+  </div>
+
+  <div id="screen-result" class="screen">
+    <div class="result-card" id="result-content"></div>
+  </div>
+
+</div>
+
+<script>
+const questions = [
+  { block: "Блок 1 — iGaming & Fintech", q: "Що таке Approval Ratio у платіжних системах?", opts: ["Відсоток відхилених транзакцій від загальної кількості", "Відсоток успішно оброблених транзакцій від загальної кількості", "Рейтинг надійності платіжного провайдера", "Ліміт транзакцій за одну добу"], correct: 1, hint: "Approval Ratio — це показник ефективності PSP. Чим він вищий, тим більше платежів успішно проходить." },
+  { block: "Блок 1 — iGaming & Fintech", q: "Chargeback — це:", opts: ["Комісія за успішну транзакцію", "Технічна помилка на стороні PSP", "Повернення коштів через банк за ініціативою власника картки", "Автоматичне поповнення балансу при помилці"], correct: 2, hint: "Chargeback ініціюється власником картки через свій банк. Це серйозний ризик для операторів iGaming." },
+  { block: "Блок 1 — iGaming & Fintech", q: "Що таке PSP?", opts: ["Система тікетів для технічної підтримки", "Компанія, що забезпечує прийом та обробку платежів", "Програмне забезпечення для аналізу логів", "Протокол безпечної передачі даних"], correct: 1, hint: "PSP (Payment Service Provider) — посередник між платформою та банківськими мережами для обробки платежів." },
+  { block: "Блок 1 — iGaming & Fintech", q: "Який статус транзакції означає, що платіж ще обробляється?", opts: ["Success", "Declined", "Pending", "Cancelled"], correct: 2, hint: "Pending — транзакція прийнята, але ще не підтверджена. Support має моніторити такі транзакції." },
+  { block: "Блок 1 — iGaming & Fintech", q: "Що таке KYC в контексті iGaming?", opts: ["Алгоритм розрахунку бонусів для гравців", "Процедура верифікації особи клієнта", "Система моніторингу платіжних потоків", "Ключовий показник якості підтримки"], correct: 1, hint: "KYC (Know Your Customer) — обов'язкова процедура перевірки особи, потрібна для ліцензованих операторів." },
+  { block: "Блок 1 — iGaming & Fintech", q: "Bonus abuse — це різновид:", opts: ["Технічного збою платформи", "Помилки в налаштуванні PSP", "Шахрайства, спрямованого на незаконне отримання бонусів", "Атаки на API платформи"], correct: 2, hint: "Bonus abuse — реєстрація кількох акаунтів або інші маніпуляції для отримання бонусів без реального грання." },
+  { block: "Блок 1 — iGaming & Fintech", q: "Гравець зробив депозит, але баланс не поповнився. Яка перша дія Support?", opts: ["Відразу повернути кошти гравцю", "Знайти transaction ID та перевірити статус у back-office", "Вимкнути платіжний метод на платформі", "Написати баг-репорт у Jira"], correct: 1, hint: "Спочатку потрібно знайти транзакцію за ID та з'ясувати реальний статус — можливо це затримка обробки." },
+  { block: "Блок 1 — iGaming & Fintech", q: "APM (Alternative Payment Method) — це:", opts: ["Метод двофакторної авторизації для адміністраторів", "Автоматизована система пріоритизації запитів", "Альтернативні методи оплати: криптовалюта, е-гаманці, мобільні платежі", "Протокол шифрування даних транзакцій"], correct: 2, hint: "APM включає PayPal, криптовалюту, мобільні гаманці — все, що не є звичайною банківською карткою." },
+  { block: "Блок 2 — Інструменти та технічні знання", q: "Для чого використовується Kibana у роботі Support?", opts: ["Для надсилання push-повідомлень гравцям", "Для пошуку та аналізу логів системи", "Для створення тікетів і задач", "Для тестування API-запитів"], correct: 1, hint: "Kibana — це UI для Elasticsearch. Support використовує її для пошуку логів за event_id, user_id, часом." },
+  { block: "Блок 2 — Інструменти та технічні знання", q: "Що показує дашборд Grafana для Payments Support?", opts: ["Список активних тікетів та їх пріоритет", "Метрики у реальному часі: Approval Ratio, кількість транзакцій, latency", "Логи помилок у коді платформи", "Верифікаційні документи користувачів"], correct: 1, hint: "Grafana відображає метрики в реальному часі. Різке падіння Approval Ratio на дашборді — перший сигнал проблеми." },
+  { block: "Блок 2 — Інструменти та технічні знання", q: "HTTP-статус 500 означає:", opts: ["Запит виконано успішно", "Ресурс не знайдено", "Помилка на стороні сервера", "Немає доступу (потрібна авторизація)"], correct: 2, hint: "500 Internal Server Error — щось пішло не так на стороні сервера. Потребує ескалації до dev-команди." },
+  { block: "Блок 2 — Інструменти та технічні знання", q: "HTTP-статус 404 означає:", opts: ["Внутрішня помилка сервера", "Запит виконано, ресурс створено", "Запитаний ресурс не знайдено", "Сервіс тимчасово недоступний"], correct: 2, hint: "404 Not Found — ресурс за вказаним URL не існує. Часто означає помилку в посиланні або видалений endpoint." },
+  { block: "Блок 2 — Інструменти та технічні знання", q: "Postman використовується для:", opts: ["Моніторингу метрик платіжної системи", "Надсилання та тестування API-запитів", "Пошуку логів у Elasticsearch", "Трекінгу помилок у production-коді"], correct: 1, hint: "Postman дозволяє надсилати REST-запити до API, перевіряти відповіді та дебажити інтеграції." },
+  { block: "Блок 2 — Інструменти та технічні знання", q: "Що таке WebSocket у контексті iGaming?", opts: ["Протокол постійного з'єднання між клієнтом і сервером для live-ігор", "Метод шифрування платіжних даних", "Система управління акаунтами гравців", "Інструмент для аналізу трафіку API"], correct: 0, hint: "WebSocket підтримує постійне з'єднання, необхідне для live-казино. Розрив з'єднання = гравець виходить з гри." },
+  { block: "Блок 2 — Інструменти та технічні знання", q: "Sentry в роботі L2 Support використовується для:", opts: ["Надсилання сповіщень гравцям", "Трекінгу помилок у коді та отримання stack trace для розробників", "Моніторингу конверсії платіжних методів", "Управління чергами тікетів"], correct: 1, hint: "Sentry фіксує production-помилки з повним stack trace. L2 передає ці дані розробникам при ескалації." },
+  { block: "Блок 2 — Інструменти та технічні знання", q: "Що таке JSON?", opts: ["Протокол безпечної авторизації", "Система логування подій", "Формат обміну даними, що використовується в API", "Мова запитів до бази даних"], correct: 2, hint: "JSON (JavaScript Object Notation) — стандартний формат для передачі даних між сервісами через API." },
+  { block: "Блок 2 — Інструменти та технічні знання", q: "Яка основна відмінність L1 від L2 Support?", opts: ["L2 обробляє запити гравців, L1 — партнерів", "L1 вирішує типові проблеми, L2 займається складними технічними розслідуваннями", "L2 відповідає тільки за нічні зміни", "L1 має доступ до коду, L2 — ні"], correct: 1, hint: "L1 — перша лінія, обробляє стандартні запити. L2 отримує ескалації, аналізує логи, координує з dev." },
+  { block: "Блок 2 — Інструменти та технічні знання", q: "Що потрібно перевірити в першу чергу, якщо Approval Ratio різко впав?", opts: ["Документи верифікації нових гравців", "Метрики в Grafana та логи в Kibana", "Налаштування бонусної системи", "Список відкритих тікетів у Jira"], correct: 1, hint: "Падіння Approval Ratio — операційний інцидент. Grafana покаже масштаб, Kibana — причину на рівні логів." },
+  { block: "Блок 2 — Інструменти та технічні знання", q: "Що таке Charles Proxy?", opts: ["Система управління правами доступу", "Інструмент для перехоплення та аналізу HTTP-трафіку", "Хмарний сервіс для зберігання логів", "Платформа для автоматизації тестів"], correct: 1, hint: "Charles Proxy перехоплює HTTP/HTTPS-трафік між клієнтом та сервером — корисно при дебагінгу запитів." },
+  { block: "Блок 2 — Інструменти та технічні знання", q: "Staging environment використовується для:", opts: ["Роботи з реальними клієнтами в production", "Відтворення та тестування багів без впливу на production", "Моніторингу метрик платформи", "Зберігання backup-копій бази даних"], correct: 1, hint: "Staging — копія production-середовища для тестування. L2 відтворює баги там, щоб не зачіпати реальних гравців." },
+  { block: "Блок 3 — Процеси, SLA та Anti-Fraud", q: "Що таке SLA у контексті Support?", opts: ["Система автоматичного розподілу тікетів", "Угода про рівень сервісу, що визначає час відповіді та вирішення", "Рівень доступу до адмінпанелі", "Алгоритм пріоритизації інцидентів"], correct: 1, hint: "SLA визначає, наприклад: Critical = відповідь за 15 хв. Порушення SLA — серйозна проблема для команди." },
+  { block: "Блок 3 — Процеси, SLA та Anti-Fraud", q: "Якому пріоритету відповідає ситуація: «платформа повністю недоступна»?", opts: ["Low / P4", "Medium / P3", "High / P2", "Critical / P1"], correct: 3, hint: "Повна недоступність платформи = Critical / P1. Максимальний пріоритет, всі ресурси — на вирішення." },
+  { block: "Блок 3 — Процеси, SLA та Anti-Fraud", q: "Що таке handover notes при змінному графіку?", opts: ["Список гравців, яким потрібна верифікація", "Передача зміни з описом відкритих інцидентів та задач", "Звіт про виконані транзакції за зміну", "Технічна документація по API"], correct: 1, hint: "Handover — передача зміни наступному спеціалісту. Без хорошого handover проблеми можуть загубитися." },
+  { block: "Блок 3 — Процеси, SLA та Anti-Fraud", q: "Що обов'язково вказувати при ескалації проблеми?", opts: ["Тільки ім'я гравця та суму депозиту", "Опис симптому, час виникнення, докази, кроки вже зроблені, оцінку impact", "Лише пріоритет тікету та assignee", "Посилання на схожі тікети у Jira"], correct: 1, hint: "Хороша ескалація = менше питань від тих, хто отримує. Завжди: що, коли, скільки постраждало, що вже зробили." },
+  { block: "Блок 3 — Процеси, SLA та Anti-Fraud", q: "Post-mortem пишеться після:", opts: ["Успішного виконання місячного плану", "Кожного завершеного тікету", "Критичного інциденту для аналізу причин та попередження повторення", "Щотижневого мітингу команди"], correct: 2, hint: "Post-mortem — документ після інциденту. Включає: що сталося, Root Cause, що виправити. Без звинувачень." },
+  { block: "Блок 3 — Процеси, SLA та Anti-Fraud", q: "Яка дія є правильною при виявленні, що PSP став недоступним?", opts: ["Зачекати кілька годин та продовжити роботу", "Вимкнути відповідний метод оплати та ескалувати до команди", "Написати гравцям про технічні роботи", "Видалити транзакції зі статусом pending"], correct: 1, hint: "При падінні PSP — вимикаємо метод оплати (щоб гравці не намагались), повідомляємо провайдера та команду." },
+  { block: "Блок 3 — Процеси, SLA та Anti-Fraud", q: "Ознакою bonus abuse є:", opts: ["Один акаунт із великим депозитом", "Кілька акаунтів з одного IP/пристрою, які отримують бонуси", "Запит на виплату більше ніж через 7 днів", "Використання декількох методів оплати"], correct: 1, hint: "Кілька акаунтів з одного IP/device — класична ознака multi-accounting для отримання welcome-бонусів." },
+  { block: "Блок 3 — Процеси, SLA та Anti-Fraud", q: "Knowledge Base (база знань) потрібна для:", opts: ["Зберігання особистих даних гравців", "Швидкого вирішення типових проблем без ескалації", "Моніторингу метрик платформи у реальному часі", "Автоматичної обробки виплат"], correct: 1, hint: "KB скорочує час вирішення та зменшує навантаження на L2. Гарна KB = ефективна команда Support." },
+  { block: "Блок 3 — Процеси, SLA та Anti-Fraud", q: "Під час верифікації (KYC) Anti-Fraud перевіряє:", opts: ["Тільки email та номер телефону", "Документ особи, підтвердження адреси та методу оплати", "Лише транзакційну активність за останній місяць", "IP-адресу та браузер користувача"], correct: 1, hint: "Стандартний KYC включає: паспорт/ID, підтвердження адреси (utility bill), підтвердження платіжного методу." },
+  { block: "Блок 3 — Процеси, SLA та Anti-Fraud", q: "Структура incident report включає:", opts: ["Summary, Timeline, Root Cause, Resolution, Prevention", "Ім'я, дата, пріоритет, assignee", "Лог помилки, скріншот, посилання на тікет", "Опис бага, кроки відтворення, очікуваний результат"], correct: 0, hint: "Post-mortem формат: Summary → Timeline → Root Cause → Resolution → Prevention. Стандарт у всій індустрії." }
+];
+
+let current = 0;
+let answers = new Array(questions.length).fill(null);
+let checked = new Array(questions.length).fill(false);
+
+function startTest() {
+  document.getElementById('screen-start').classList.remove('active');
+  document.getElementById('screen-test').classList.add('active');
+  renderQ();
+}
+
+function renderQ() {
+  const q = questions[current];
+  const total = questions.length;
+  document.getElementById('progress-bar').style.width = ((current + 1) / total * 100) + '%';
+  document.getElementById('progress-label').textContent = `Питання ${current + 1} з ${total}`;
+
+  const letters = ['A', 'B', 'C', 'D'];
+  let optsHtml = q.opts.map((o, i) => {
+    let cls = 'option';
+    if (checked[current]) {
+      if (i === q.correct) cls += ' correct';
+      else if (i === answers[current] && i !== q.correct) cls += ' wrong';
+    } else if (answers[current] === i) cls += ' selected';
+    return `<div class="${cls}" onclick="selectOpt(${i})">
+      <div class="option-letter">${letters[i]}</div>
+      <div class="option-text">${o}</div>
+    </div>`;
+  }).join('');
+
+  let feedbackHtml = '';
+  if (checked[current]) {
+    const ok = answers[current] === q.correct;
+    feedbackHtml = `<div class="feedback ${ok ? 'ok' : 'fail'} show">
+      ${ok ? '✅ Правильно!' : '❌ Неправильно. Правильна відповідь: <strong>${q.opts[q.correct]}</strong>'}<br>
+      <span style="opacity:0.85">${q.hint}</span>
+    </div>`;
+  }
+
+  document.getElementById('question-area').innerHTML = `
+    <div class="question-card">
+      <div class="q-block-label">${q.block}</div>
+      <div class="q-header">
+        <div class="q-num">${current + 1}</div>
+        <div class="q-text">${q.q}</div>
+      </div>
+      <div class="options">${optsHtml}</div>
+      ${feedbackHtml}
+    </div>`;
+
+  document.getElementById('btn-prev').style.display = current > 0 ? 'inline-flex' : 'none';
+  document.getElementById('btn-check').style.display = (!checked[current] && answers[current] !== null) ? 'inline-flex' : 'none';
+  document.getElementById('btn-next').style.display = (checked[current] && current < questions.length - 1) ? 'inline-flex' : 'none';
+  document.getElementById('btn-finish').style.display = (checked[current] && current === questions.length - 1) ? 'inline-flex' : 'none';
+}
+
+function selectOpt(i) {
+  if (checked[current]) return;
+  answers[current] = i;
+  document.getElementById('btn-check').style.display = 'inline-flex';
+  renderQ();
+}
+
+function checkAnswer() {
+  if (answers[current] === null) return;
+  checked[current] = true;
+  renderQ();
+}
+
+function nextQ() {
+  if (current < questions.length - 1) { current++; renderQ(); }
+}
+
+function prevQ() {
+  if (current > 0) { current--; renderQ(); }
+}
+
+function showResult() {
+  document.getElementById('screen-test').classList.remove('active');
+  document.getElementById('screen-result').classList.add('active');
+
+  const correct = answers.filter((a, i) => a === questions[i].correct).length;
+  const total = questions.length;
+  const pct = Math.round(correct / total * 100);
+  const pass = correct >= 22;
+
+  document.getElementById('result-content').innerHTML = `
+    <div class="result-icon">${pass ? '🏆' : '📚'}</div>
+    <div class="result-score ${pass ? 'result-pass' : 'result-fail'}">${correct}/${total}</div>
+    <div class="result-label">${pct}% правильних відповідей</div>
+    <div style="display:inline-block; padding: 8px 24px; border-radius: 20px; font-weight: 700; font-size: 16px; background: ${pass ? '#eafaf1' : '#fdf2f2'}; color: ${pass ? '#1d6b3e' : '#a93226'}; margin-bottom: 20px;">
+      ${pass ? '✅ ТЕСТ ПРОЙДЕНО!' : '❌ Потрібно більше підготовки'}
+    </div>
+    <div class="result-stats">
+      <div class="stat"><div class="stat-val" style="color:#27ae60">${correct}</div><div class="stat-lbl">Правильних</div></div>
+      <div class="stat"><div class="stat-val" style="color:#e74c3c">${total - correct}</div><div class="stat-lbl">Помилок</div></div>
+      <div class="stat"><div class="stat-val" style="color:#1F4E79">${pct}%</div><div class="stat-lbl">Результат</div></div>
+    </div>
+    <p style="color:#555; font-size:14px; margin-bottom: 20px;">
+      ${pass ? 'Чудовий результат! Ви готові до співбесіди на Support-позиції в iGaming/Fintech.' : 'Прохідний бал — 22/30. Повторіть матеріал та спробуйте ще раз.'}
+    </p>
+    <button class="restart-btn" onclick="restartTest()">🔄 Пройти ще раз</button>`;
+}
+
+function restartTest() {
+  current = 0;
+  answers = new Array(questions.length).fill(null);
+  checked = new Array(questions.length).fill(false);
+  document.getElementById('screen-result').classList.remove('active');
+  document.getElementById('screen-test').classList.add('active');
+  renderQ();
+}
+</script>
+</body>
+</html>
