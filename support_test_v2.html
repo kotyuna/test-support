@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Тест: Support у iGaming / Fintech | 50 питань</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: Arial, sans-serif; background: #f0f4f8; color: #1a1a2e; }
+.header { background: linear-gradient(135deg, #1F4E79 0%, #2E75B6 100%); color: white; padding: 28px 20px; text-align: center; }
+.header h1 { font-size: clamp(18px, 4vw, 26px); margin-bottom: 8px; }
+.badges { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 14px; }
+.badge { background: rgba(255,255,255,0.2); border-radius: 20px; padding: 4px 14px; font-size: 13px; }
+.container { max-width: 760px; margin: 0 auto; padding: 20px 16px 60px; }
+.progress-wrap { background: #dce8f5; border-radius: 8px; height: 8px; margin: 18px 0 6px; }
+.progress-bar { background: #2E75B6; height: 8px; border-radius: 8px; transition: width 0.4s; }
+.progress-label { font-size: 13px; color: #555; text-align: right; margin-bottom: 18px; }
+.qcard { background: white; border-radius: 14px; padding: 22px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.07); border: 1px solid #e0ecf7; }
+.qhead { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; }
+.qnum { background: #1F4E79; color: white; border-radius: 50%; width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+.qtext { font-size: 15px; font-weight: 600; line-height: 1.5; }
+.block-label { font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; color: #2E75B6; margin-bottom: 12px; }
+.options { display: flex; flex-direction: column; gap: 9px; }
+.opt { display: flex; align-items: flex-start; gap: 11px; padding: 11px 15px; border: 1.5px solid #dce8f5; border-radius: 10px; cursor: pointer; transition: all 0.18s; background: white; }
+.opt:hover:not(.sel):not(.ok):not(.err) { border-color: #2E75B6; background: #f0f7ff; }
+.opt.sel { border-color: #2E75B6; background: #e8f2fc; }
+.opt.ok { border-color: #27ae60; background: #eafaf1; }
+.opt.err { border-color: #e74c3c; background: #fdf2f2; }
+.optltr { width: 28px; height: 28px; border-radius: 50%; background: #f0f4f8; border: 1.5px solid #c5d8ec; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: #1F4E79; flex-shrink: 0; transition: all 0.18s; }
+.opt.sel .optltr { background: #2E75B6; color: white; border-color: #2E75B6; }
+.opt.ok .optltr { background: #27ae60; color: white; border-color: #27ae60; }
+.opt.err .optltr { background: #e74c3c; color: white; border-color: #e74c3c; }
+.opttxt { font-size: 14px; line-height: 1.5; padding-top: 3px; }
+.opt.ok .opttxt { color: #1d6b3e; font-weight: 500; }
+.opt.err .opttxt { color: #a93226; }
+.fb { margin-top: 11px; padding: 10px 14px; border-radius: 8px; font-size: 13px; line-height: 1.5; display: none; }
+.fb.show { display: block; }
+.fb.ok { background: #eafaf1; color: #1d6b3e; border-left: 3px solid #27ae60; }
+.fb.err { background: #fdf2f2; color: #922b21; border-left: 3px solid #e74c3c; }
+.nav { display: flex; gap: 12px; margin-top: 24px; justify-content: flex-end; flex-wrap: wrap; }
+.btn { padding: 11px 26px; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; transition: all 0.18s; }
+.btn-p { background: #1F4E79; color: white; } .btn-p:hover { background: #163b5c; }
+.btn-s { background: white; color: #1F4E79; border: 1.5px solid #c5d8ec; } .btn-s:hover { background: #f0f7ff; }
+.btn-c { background: #2E75B6; color: white; } .btn-c:hover { background: #1F4E79; }
+.result { background: white; border-radius: 16px; padding: 36px 24px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+.r-score { font-size: 52px; font-weight: 800; margin-bottom: 6px; }
+.r-pass { color: #27ae60; } .r-fail { color: #e74c3c; }
+.r-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 20px 0; }
+.stat { background: #f0f4f8; border-radius: 10px; padding: 14px; }
+.sv { font-size: 26px; font-weight: 700; color: #1F4E79; }
+.sl { font-size: 12px; color: #777; margin-top: 2px; }
+.rbtn { background: #1F4E79; color: white; border: none; padding: 14px 36px; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 12px; }
+.rbtn:hover { background: #163b5c; }
+.screen { display: none; } .screen.active { display: block; }
+.start-card { background: white; border-radius: 16px; padding: 32px 24px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+.start-card h2 { font-size: 20px; margin-bottom: 12px; color: #1F4E79; }
+.start-list { text-align: left; background: #f0f7ff; border-radius: 10px; padding: 16px 20px; margin: 18px 0; }
+.start-list li { font-size: 14px; color: #333; margin-bottom: 8px; list-style: none; }
+.sbtn { background: #1F4E79; color: white; border: none; padding: 14px 40px; border-radius: 12px; font-size: 17px; font-weight: 700; cursor: pointer; }
+.sbtn:hover { background: #163b5c; }
+.block-divider { background: #f0f7ff; border-radius: 10px; padding: 12px 16px; margin: 8px 0 16px; border-left: 4px solid #2E75B6; font-size: 14px; font-weight: 700; color: #1F4E79; }
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>🎓 Тест: Support у iGaming / Fintech</h1>
+  <p>Повна версія на основі аналізу 98 реальних вакансій</p>
+  <div class="badges">
+    <span class="badge">📋 50 питань</span>
+    <span class="badge">⏱️ ~45 хвилин</span>
+    <span class="badge">✅ Прохідний бал: 37/50</span>
+    <span class="badge">🏆 98 вакансій проаналізовано</span>
+  </div>
+</div>
+
+<div class="container">
+  <div id="scr-start" class="screen active">
+    <div class="start-card">
+      <h2>Повний тест підготовки до співбесіди</h2>
+      <p style="font-size:15px;color:#555;margin-bottom:10px">Питання сформовані на основі реального аналізу 98 вакансій з DOU, Djinni та Robota.ua</p>
+      <div class="start-list">
+        <ul>
+          <li>📌 Блок 1 (Q1–10): iGaming, Fintech, Crypto, Payments</li>
+          <li>📌 Блок 2 (Q11–20): Інструменти: Jira, Zendesk, Grafana, Kibana</li>
+          <li>📌 Блок 3 (Q21–30): API, SQL, Linux, Cloud (AWS)</li>
+          <li>📌 Блок 4 (Q31–40): Anti-Fraud, AML, KYC</li>
+          <li>📌 Блок 5 (Q41–50): Процеси, SLA, Incident Management</li>
+          <li>✅ Правильна відповідь + пояснення після кожного питання</li>
+          <li>🏆 Прохідний бал: 37/50 (74%)</li>
+        </ul>
+      </div>
+      <button class="sbtn" onclick="startTest()">Розпочати тест →</button>
+    </div>
+  </div>
+
+  <div id="scr-test" class="screen">
+    <div class="progress-wrap"><div class="progress-bar" id="pbar" style="width:2%"></div></div>
+    <div class="progress-label" id="plabel">Питання 1 з 50</div>
+    <div id="qarea"></div>
+    <div class="nav">
+      <button class="btn btn-s" id="btn-prev" onclick="prevQ()" style="display:none">← Назад</button>
+      <button class="btn btn-c" id="btn-check" onclick="checkAns()" style="display:none">Перевірити</button>
+      <button class="btn btn-p" id="btn-next" onclick="nextQ()" style="display:none">Далі →</button>
+      <button class="btn btn-p" id="btn-fin" onclick="showResult()" style="display:none">Завершити тест</button>
+    </div>
+  </div>
+
+  <div id="scr-result" class="screen">
+    <div class="result" id="result-content"></div>
+  </div>
+</div>
+
+<script>
+const Q = [
+  // БЛОК 1: iGaming, Fintech, Crypto, Payments
+  {b:"Блок 1 — iGaming, Fintech, Crypto, Payments",q:"Що таке Approval Ratio у платіжних системах?",o:["Відсоток відхилених транзакцій","Відсоток успішно оброблених транзакцій від загальної кількості","Рейтинг надійності PSP","Ліміт транзакцій за добу"],c:1,h:"Approval Ratio — ключова метрика ефективності PSP. Падіння нижче норми — сигнал для негайної ескалації."},
+  {b:"Блок 1 — iGaming, Fintech, Crypto, Payments",q:"MID у платіжних системах — це:",o:["Моніторинговий інцидент-дашборд","Унікальний ідентифікатор мерчанта в системі еквайрингу","Метод ідентифікації для KYC","Мінімальна сума депозиту"],c:1,h:"MID (Merchant ID) — ідентифікатор що банк-еквайр присвоює мерчанту для обробки карткових платежів."},
+  {b:"Блок 1 — iGaming, Fintech, Crypto, Payments",q:"Payment Orchestration — це:",o:["Ручне управління виплатами гравцям","Координація кількох PSP через єдину платформу для оптимізації маршрутизації","Аналіз платіжних трендів у Excel","Процес підключення нового мерчанта"],c:1,h:"Payment Orchestration (Corefy, Solidgate) — автоматична маршрутизація платежів між PSP для максимізації Approval Ratio."},
+  {b:"Блок 1 — iGaming, Fintech, Crypto, Payments",q:"Webhook у платіжних інтеграціях — це:",o:["Метод захисту від DDoS-атак","HTTP-запит який сервер надсилає клієнту при настанні події","Протокол шифрування транзакцій","Тип двофакторної авторизації"],c:1,h:"Webhook — push-нотифікація від PSP до платформи. Наприклад: транзакція змінила статус → PSP надсилає webhook."},
+  {b:"Блок 1 — iGaming, Fintech, Crypto, Payments",q:"Stablecoin — це:",o:["Стабільна криптобіржа","Криптовалюта прив'язана до вартості фіатної валюти (USD, EUR)","Ліцензія для крипто-обмінника","Тип блокчейн-гаманця"],c:1,h:"Stablecoin (USDT, USDC) — крипто яка не волатильна. Компанії типу Kolo Wallet будують на них продукти."},
+  {b:"Блок 1 — iGaming, Fintech, Crypto, Payments",q:"Chargeback fraud — це:",o:["Технічна помилка при поверненні коштів","Гравець отримує виграш і потім скасовує депозит через банк","Шахрайство з бонусними нарахуваннями","Підбір паролів до акаунту"],c:1,h:"Chargeback fraud — гравець грає, виграє, потім оспорює транзакцію депозиту через банк і залишає собі виграш."},
+  {b:"Блок 1 — iGaming, Fintech, Crypto, Payments",q:"Settlement у платежах — це:",o:["Угода між PSP та гравцем","Розрахунок між PSP та мерчантом (виплата зібраних коштів)","Процес блокування підозрілих транзакцій","Налаштування cashier на платформі"],c:1,h:"Settlement — PSP переводить мерчанту зібрані кошти мінус комісія. Зазвичай T+1 або T+2 (1-2 робочих дні)."},
+  {b:"Блок 1 — iGaming, Fintech, Crypto, Payments",q:"Що таке High-risk merchant?",o:["Мерчант з великим обсягом транзакцій","Мерчант у сфері з підвищеним ризиком шахрайства/chargebacks (iGaming, Forex, Adult)","Мерчант без KYC верифікації","Мерчант який використовує крипто"],c:1,h:"High-risk — iGaming, Forex, Adult контент. Банки вимагають більше документів і встановлюють вищі резерви."},
+  {b:"Блок 1 — iGaming, Fintech, Crypto, Payments",q:"BaaS (Banking-as-a-Service) — це:",o:["Бонусна система для авіаперельотів","Надання банківських сервісів через API без повноцінної банківської ліцензії","Backup система для фінансових даних","Аналітика банківських транзакцій"],c:1,h:"BaaS (Unifiedfinance) — компанії інтегрують платіжні/банківські функції через API не маючи власної ліцензії."},
+  {b:"Блок 1 — iGaming, Fintech, Crypto, Payments",q:"Гравець зробив депозит, кошти списались, але баланс не поповнився. Перша дія Support:",o:["Одразу повернути кошти гравцю","Знайти transaction ID та перевірити статус у back-office та PSP","Вимкнути метод оплати на платформі","Написати баг-репорт одразу"],c:1,h:"Спочатку знаходимо транзакцію. Можливо статус ще 'pending' — кошти в процесі обробки. Рішення залежить від статусу."},
+
+  // БЛОК 2: Інструменти
+  {b:"Блок 2 — Інструменти: Jira, Zendesk, Grafana, Kibana",q:"Jira Service Management (JSM) відрізняється від звичайної Jira тим, що:",o:["JSM безкоштовний для малих команд","JSM має SLA tracking, queues та portal для клієнтів — спеціально для Support","JSM не підтримує Agile методологію","JSM працює тільки в мобільних додатках"],c:1,h:"JSM — версія Jira для IT-підтримки: SLA таймери, customer portal, черги тікетів по пріоритету."},
+  {b:"Блок 2 — Інструменти: Jira, Zendesk, Grafana, Kibana",q:"Zendesk Macro — це:",o:["Вірус або шкідливий скрипт","Набір автоматичних дій одним кліком: змінити статус, додати теги, надіслати відповідь","Метрика задоволеності клієнтів","Автоматичний чатбот"],c:1,h:"Macro в Zendesk = шаблон дій. Наприклад: 'Закрити тікет + надіслати CSAT + призначити тег billing'."},
+  {b:"Блок 2 — Інструменти: Jira, Zendesk, Grafana, Kibana",q:"CSAT у контексті Customer Support — це:",o:["Централізована система аналізу транзакцій","Метрика задоволеності клієнта після вирішення звернення","Тип сертифікату безпеки","Протокол передачі даних"],c:1,h:"CSAT (Customer Satisfaction Score) — оцінка клієнта після закриття тікету. Ключова KPI для Support-команд."},
+  {b:"Блок 2 — Інструменти: Jira, Zendesk, Grafana, Kibana",q:"Для чого використовують Confluence?",o:["Для створення та відстеження тікетів","Для ведення внутрішньої wiki-документації: runbooks, процедури, FAQ","Для моніторингу метрик у реальному часі","Для аналізу платіжних транзакцій"],c:1,h:"Confluence — документація команди. Тут зберігаються runbooks, incident reports, onboarding guides."},
+  {b:"Блок 2 — Інструменти: Jira, Zendesk, Grafana, Kibana",q:"Grafana алерт спрацьовує коли Approval Ratio падає нижче 70%. Перша дія Support:",o:["Закрити алерт і чекати","Перевірити конкретні PSP у Grafana, подивитись логи у Kibana, ескалувати","Одразу вимкнути всі методи оплати","Написати гравцям про технічні роботи"],c:1,h:"Алгоритм: Grafana (масштаб) → Kibana (причина) → ескалація. Не вимикаємо всі методи без розуміння причини."},
+  {b:"Блок 2 — Інструменти: Jira, Zendesk, Grafana, Kibana",q:"OpenSearch відрізняється від Kibana тим, що:",o:["OpenSearch — це тільки для відео файлів","OpenSearch — open-source форк Elasticsearch від AWS, Kibana — UI для Elasticsearch","OpenSearch набагато дорожче","OpenSearch не підтримує пошук у логах"],c:1,h:"OpenSearch = відкрита альтернатива Elasticsearch від AWS. Kibana — це UI для Elastic. Функціонально схожі."},
+  {b:"Блок 2 — Інструменти: Jira, Zendesk, Grafana, Kibana",q:"PagerDuty у роботі Support використовується для:",o:["Управління завданнями команди","On-call alerting: ескалація критичних алертів до відповідального чергового","Аналізу платіжних транзакцій","Зберігання документації"],c:1,h:"PagerDuty — система on-call чергувань. При P1-інциденті автоматично будить відповідального інженера."},
+  {b:"Блок 2 — Інструменти: Jira, Zendesk, Grafana, Kibana",q:"Kibana KQL-запит: status:\"error\" AND service:\"payments\" AND @timestamp:[now-1h TO now] — що він робить?",o:["Видаляє всі помилкові записи за останню годину","Знаходить всі логи з помилками сервісу payments за останню годину","Вимикає сервіс payments","Надсилає алерт команді"],c:1,h:"KQL (Kibana Query Language) — пошук за полями лога. Цей запит фільтрує помилки платіжного сервісу за 1 годину."},
+  {b:"Блок 2 — Інструменти: Jira, Zendesk, Grafana, Kibana",q:"Zendesk Trigger відрізняється від Automation тим, що:",o:["Trigger — платна функція, Automation — безкоштовна","Trigger спрацьовує при зміні умов (подія), Automation — за часом","Trigger тільки для email, Automation для чату","Різниці немає"],c:1,h:"Trigger = реакція на подію (тікет оновлено). Automation = реакція на час (тікет не оновлювався 24 год)."},
+  {b:"Блок 2 — Інструменти: Jira, Zendesk, Grafana, Kibana",q:"Sentry використовується для:",o:["Зберігання платіжних логів","Трекінгу помилок у production-коді зі stack trace та breadcrumbs","Моніторингу метрик платформи","Управління чергами тікетів"],c:1,h:"Sentry фіксує exceptions у production. L2 передає Sentry issue developers при ескалації — це прискорює debug."},
+
+  // БЛОК 3: API, SQL, Linux, Cloud
+  {b:"Блок 3 — API, SQL, Linux, Cloud (AWS)",q:"HTTP статус 422 Unprocessable Entity означає:",o:["Сервер перевантажений","Запит синтаксично правильний але містить семантичні помилки (валідація провалилась)","Ресурс не знайдено","Потрібна авторизація"],c:1,h:"422 — сервер зрозумів запит, але не може обробити через некоректні дані. Наприклад: невалідний формат картки."},
+  {b:"Блок 3 — API, SQL, Linux, Cloud (AWS)",q:"HTTP статус 429 Too Many Requests означає:",o:["Занадто великий запит","Перевищено ліміт запитів (rate limit)","Сервер недоступний","Помилка авторизації"],c:1,h:"429 — rate limiting. Клієнт надсилає забагато запитів. Support перевіряє чи не блокується інтеграція партнера."},
+  {b:"Блок 3 — API, SQL, Linux, Cloud (AWS)",q:"SQL запит для знаходження всіх pending транзакцій за останню годину:",o:["DELETE FROM transactions WHERE status='pending'","SELECT * FROM transactions WHERE status='pending' AND created_at > NOW() - INTERVAL 1 HOUR","UPDATE transactions SET status='success' WHERE status='pending'","DROP TABLE transactions"],c:1,h:"SELECT з WHERE фільтром — базовий запит для Support. Допомагає знайти 'завислі' транзакції для розслідування."},
+  {b:"Блок 3 — API, SQL, Linux, Cloud (AWS)",q:"Linux команда для перегляду логів у реальному часі:",o:["ls -la /var/log/","tail -f /var/log/app.log","grep 'ERROR' /var/log/app.log","cat /etc/hosts"],c:1,h:"tail -f (follow) — показує нові рядки лога в реальному часі. Незамінно при відстеженні live-інцидентів."},
+  {b:"Блок 3 — API, SQL, Linux, Cloud (AWS)",q:"AWS CloudWatch у роботі Support використовується для:",o:["Зберігання документації команди","Моніторингу логів та метрик AWS-сервісів, налаштування алертів","Управління правами доступу","Зберігання KYC-документів"],c:1,h:"CloudWatch — нативний моніторинг AWS. Алерти, логи Lambda/EC2/RDS. Інтегрується з PagerDuty для on-call."},
+  {b:"Блок 3 — API, SQL, Linux, Cloud (AWS)",q:"Kubernetes Pod у контексті Support — це:",o:["Документ з описом процедури","Мінімальна одиниця деплою (контейнер з додатком)","Метрика продуктивності","Тип бази даних"],c:1,h:"Pod — запущений екземпляр додатку в Kubernetes. Якщо Pod 'CrashLoopBackOff' — сервіс недоступний. Support L2 перевіряє логи pod."},
+  {b:"Блок 3 — API, SQL, Linux, Cloud (AWS)",q:"Linux команда grep 'ERROR' /var/log/app.log | wc -l — що вона робить?",o:["Видаляє всі ERROR з лога","Підраховує кількість рядків що містять ERROR у файлі лога","Замінює ERROR на WARNING","Знаходить і відкриває файл"],c:1,h:"grep знаходить рядки з ERROR, wc -l рахує їх кількість. Швидкий спосіб оцінити масштаб проблеми в логах."},
+  {b:"Блок 3 — API, SQL, Linux, Cloud (AWS)",q:"Swagger / OpenAPI документація використовується для:",o:["Ведення внутрішньої wiki","Документування та інтерактивного тестування REST API","Моніторингу платіжних метрик","Управління тікетами"],c:1,h:"Swagger — автоматична документація API з можливістю надсилати тестові запити прямо з браузера. Корисно при дебагу."},
+  {b:"Блок 3 — API, SQL, Linux, Cloud (AWS)",q:"AWS EC2 у контексті технічної підтримки — це:",o:["Система управління документами","Віртуальний сервер де запущено додаток","Сервіс зберігання файлів","Інструмент для шифрування"],c:1,h:"EC2 (Elastic Compute Cloud) — VM в AWS. Якщо 'сервер впав' — перевіряємо стан EC2 instance в консолі AWS."},
+  {b:"Блок 3 — API, SQL, Linux, Cloud (AWS)",q:"JSON відповідь від платіжного API: {\"status\":\"declined\",\"code\":\"insufficient_funds\"}. Що означає code?",o:["Технічна помилка на стороні PSP","Недостатньо коштів на картці гравця","Картку заблоковано банком","Неправильний CVV"],c:1,h:"insufficient_funds — недостатньо коштів. Support пояснює гравцю причину та не ескалує — це клієнтська проблема."},
+
+  // БЛОК 4: Anti-Fraud, AML, KYC
+  {b:"Блок 4 — Anti-Fraud, AML, KYC",q:"Multi-accounting у iGaming — це:",o:["Управління кількома платіжними методами","Один гравець керує кількома акаунтами для отримання бонусів","Технічна помилка дублювання акаунтів","Легальна стратегія гравця"],c:1,h:"Multi-accounting — порушення правил. Anti-Fraud виявляє через однакові IP, devices, платіжні методи між акаунтами."},
+  {b:"Блок 4 — Anti-Fraud, AML, KYC",q:"AML (Anti-Money Laundering) — відмивання грошей проходить через 3 етапи:",o:["KYC, Verification, Approval","Placement (введення), Layering (маскування), Integration (легалізація)","Detection, Investigation, Resolution","Deposit, Transfer, Withdrawal"],c:1,h:"Класична схема відмивання: розміщення злочинних коштів → серія транзакцій для маскування → легальний вивід."},
+  {b:"Блок 4 — Anti-Fraud, AML, KYC",q:"Suspicious activity при AML-моніторингу:",o:["Гравець робить депозит кожного тижня","Серія швидких депозитів → мінімальна гра → виплата без пояснення джерела коштів","Гравець виграв великий джекпот","Гравець використовує VPN"],c:1,h:"Класична ознака laundering: гроші 'проходять' через платформу без реальної гри. Потрібна ескалація до Compliance."},
+  {b:"Блок 4 — Anti-Fraud, AML, KYC",q:"Source of Funds у KYC — це:",o:["Технічне джерело трафіку на сайт","Підтвердження законного походження коштів (зарплата, продаж майна)","Метод оплати (картка, гаманець)","Статистика джерел депозитів"],c:1,h:"Source of Funds — документальне підтвердження звідки у гравця гроші. Обов'язково при великих сумах або підозрі."},
+  {b:"Блок 4 — Anti-Fraud, AML, KYC",q:"Device fingerprinting в Anti-Fraud використовується для:",o:["Оптимізації швидкості завантаження сторінки","Ідентифікації пристроїв між різними акаунтами для виявлення multi-accounting","Захисту від DDoS-атак","Шифрування платіжних даних"],c:1,h:"Fingerprint пристрою (browser, OS, IP, timezone) залишається однаковим між акаунтами — класичний спосіб виявити multi-acc."},
+  {b:"Блок 4 — Anti-Fraud, AML, KYC",q:"Arbitrage у контексті iGaming Anti-Fraud — це:",o:["Законна стратегія арбітражу на ставках","Маніпуляція бонусами або коефіцієнтами для гарантованого прибутку без реального ризику","Технічна помилка у розрахунку виплат","Підозрілий IP-адрес гравця"],c:1,h:"Bonus/odds arbitrage — використання вразливостей у бонусній механіці або коефіцієнтах. Anti-Fraud аналізує betting patterns."},
+  {b:"Блок 4 — Anti-Fraud, AML, KYC",q:"Risk scoring транзакції — це:",o:["Ручна оцінка менеджером","Автоматична оцінка ризику транзакції на основі набору параметрів (IP, сума, поведінка)","Рейтинг PSP-провайдера","Оцінка якості підтримки"],c:1,h:"Risk score — автоматичний скоринг. Наприклад: новий акаунт + VPN + велика сума = високий ризик → додаткова верифікація."},
+  {b:"Блок 4 — Anti-Fraud, AML, KYC",q:"Velocity check у Anti-Fraud — це:",o:["Перевірка швидкості завантаження сторінки","Ліміти на кількість або суму транзакцій за одиницю часу","Перевірка версії браузера","Аналіз швидкості набору тексту"],c:1,h:"Velocity rule: наприклад, не більше 5 депозитів за 1 годину або не більше $1000 за 24 год. Порушення → block/review."},
+  {b:"Блок 4 — Anti-Fraud, AML, KYC",q:"При виявленні підозрілої транзакції Anti-Fraud менеджер повинен:",o:["Одразу заблокувати гравця без документування","Задокументувати підозрілі ознаки, заморозити виплату, ескалувати до відповідального","Повернути кошти гравцю","Ігнорувати якщо сума невелика"],c:1,h:"Процедура: документуємо все, заморожуємо (не видаляємо!) виплату, ескалуємо до Risk/Compliance team."},
+  {b:"Блок 4 — Anti-Fraud, AML, KYC",q:"Стандартний набір документів для базової KYC верифікації:",o:["Тільки email та номер телефону","Документ особи + підтвердження адреси + підтвердження методу оплати","Тільки фото з документом","Банківська виписка за рік"],c:1,h:"Стандарт KYC: ID-документ (паспорт/картка) + proof of address (utility bill) + proof of payment method (фото картки)."},
+
+  // БЛОК 5: Процеси, SLA, Incident Management
+  {b:"Блок 5 — Процеси, SLA, Incident Management",q:"FRT (First Response Time) у SLA — це:",o:["Час від виявлення до вирішення інциденту","Час від отримання тікету до першої відповіді клієнту","Час роботи системи без збоїв","Частота оновлення тікетів"],c:1,h:"FRT — перша метрика SLA. Наприклад P1: FRT = 15 хв. Навіть якщо вирішення займе годину, перша відповідь — за 15 хв."},
+  {b:"Блок 5 — Процеси, SLA, Incident Management",q:"Що відбувається при SLA breach (порушенні SLA)?",o:["Тікет автоматично закривається","Система сповіщає менеджера, тікет ескалується, це негативно впливає на KPI команди","Клієнт отримує компенсацію автоматично","Нічого критичного"],c:1,h:"SLA breach — серйозна подія. В Jira/Zendesk спрацьовує алерт, тікет ескалується, фіксується для performance review."},
+  {b:"Блок 5 — Процеси, SLA, Incident Management",q:"Handover notes при змінному графіку — це:",o:["Технічна документація по API","Структурований опис відкритих інцидентів, що передається наступній зміні","Звіт про виконані транзакції","Список гравців для верифікації"],c:1,h:"Handover — обов'язковий документ при 2/2 графіку. Без нього проблеми губляться між змінами і SLA порушується."},
+  {b:"Блок 5 — Процеси, SLA, Incident Management",q:"Root cause у post-mortem — це:",o:["Перелік всіх симптомів інциденту","Фундаментальна технічна причина що призвела до інциденту","Список людей причетних до інциденту","Часовий діапазон інциденту"],c:1,h:"Root cause — не симптом, а причина. Наприклад: симптом = PSP недоступний; root cause = expired SSL сертифікат у PSP."},
+  {b:"Блок 5 — Процеси, SLA, Incident Management",q:"P1 Critical інцидент — платформа повністю недоступна. Перша дія:",o:["Написати post-mortem","Негайно повідомити всіх stakeholders та почати investigation одночасно","Почекати 30 хвилин — можливо само пройде","Написати гравцям листа"],c:1,h:"P1 — все одночасно: notification stakeholders + investigation + mitigation. Паралельні дії, не послідовні."},
+  {b:"Блок 5 — Процеси, SLA, Incident Management",q:"Staging environment у роботі Support L2 використовується для:",o:["Зберігання production-даних","Відтворення та тестування багів без впливу на реальних користувачів","Тренування нових співробітників","Моніторингу метрик"],c:1,h:"Staging = копія production. L2 відтворює баг там, збирає докази (logs, screenshots) і передає dev-команді."},
+  {b:"Блок 5 — Процеси, SLA, Incident Management",q:"Mitigation у incident lifecycle — це:",o:["Постійне виправлення проблеми","Тимчасове вирішення (workaround) для відновлення сервісу поки розробляється повне виправлення","Документування інциденту","Повідомлення клієнтів"],c:1,h:"Mitigation ≠ resolution. Наприклад: PSP впав → mitigation = перемикаємо трафік на backup PSP. Resolution = PSP відновлено."},
+  {b:"Блок 5 — Процеси, SLA, Incident Management",q:"Deflection rate у Support Automation — це:",o:["Відсоток тікетів переданих на ескалацію","Відсоток звернень вирішених самостійно (chatbot/FAQ) без участі агента","Кількість відмов у верифікації","Відсоток помилкових алертів"],c:1,h:"Deflection = зниження навантаження через self-service. Чим вищий — тим ефективніша автоматизація підтримки."},
+  {b:"Блок 5 — Процеси, SLA, Incident Management",q:"При ескалації проблеми до dev-команди обов'язково надати:",o:["Тільки ім'я клієнта та суму","Transaction ID, timestamp, error logs, steps to reproduce, impact assessment","Тільки скріншот екрану","Посилання на схожі тікети"],c:1,h:"Structured findings = швидше вирішення. Dev не має часу на повторне розслідування — надаємо все одразу."},
+  {b:"Блок 5 — Процеси, SLA, Incident Management",q:"AHT (Average Handle Time) — це:",o:["Середній час відповіді на перше звернення","Середній час обробки одного тікету від відкриття до закриття","Час доступності системи на місяць","Середній час між інцидентами"],c:1,h:"AHT — ключова KPI ефективності агента. Занадто низький AHT = поверхнева обробка. Занадто високий = неефективність."},
+  {b:"Блок 5 — Процеси, SLA, Incident Management",q:"99.9% uptime SLA означає максимальний downtime на місяць приблизно:",o:["1 година","44 хвилини","24 години","10 хвилин"],c:1,h:"99.9% = три дев'ятки. 0.1% від 30 днів = ~43.8 хвилин на місяць. Стандарт для більшості iGaming платформ."},
+];
+
+let cur=0, ans=new Array(Q.length).fill(null), chk=new Array(Q.length).fill(false);
+
+function startTest(){
+  document.getElementById('scr-start').classList.remove('active');
+  document.getElementById('scr-test').classList.add('active');
+  render();
+}
+
+function render(){
+  const q=Q[cur], tot=Q.length;
+  document.getElementById('pbar').style.width=((cur+1)/tot*100)+'%';
+  document.getElementById('plabel').textContent=`Питання ${cur+1} з ${tot}`;
+  const ltrs=['A','B','C','D'];
+  let opts=q.o.map((o,i)=>{
+    let cls='opt';
+    if(chk[cur]){
+      if(i===q.c) cls+=' ok';
+      else if(i===ans[cur]&&i!==q.c) cls+=' err';
+    } else if(ans[cur]===i) cls+=' sel';
+    return `<div class="${cls}" onclick="selOpt(${i})"><div class="optltr">${ltrs[i]}</div><div class="opttxt">${o}</div></div>`;
+  }).join('');
+  let fb='';
+  if(chk[cur]){
+    const ok=ans[cur]===q.c;
+    fb=`<div class="fb ${ok?'ok':'err'} show">${ok?'✅ Правильно!':'❌ Неправильно. Правильна відповідь: <strong>'+q.o[q.c]+'</strong>'}<br><span style="opacity:.85">${q.h}</span></div>`;
+  }
+  document.getElementById('qarea').innerHTML=`<div class="qcard"><div class="block-label">${q.b}</div><div class="qhead"><div class="qnum">${cur+1}</div><div class="qtext">${q.q}</div></div><div class="options">${opts}</div>${fb}</div>`;
+  document.getElementById('btn-prev').style.display=cur>0?'inline-flex':'none';
+  document.getElementById('btn-check').style.display=(!chk[cur]&&ans[cur]!==null)?'inline-flex':'none';
+  document.getElementById('btn-next').style.display=(chk[cur]&&cur<Q.length-1)?'inline-flex':'none';
+  document.getElementById('btn-fin').style.display=(chk[cur]&&cur===Q.length-1)?'inline-flex':'none';
+}
+
+function selOpt(i){if(chk[cur])return;ans[cur]=i;document.getElementById('btn-check').style.display='inline-flex';render();}
+function checkAns(){if(ans[cur]===null)return;chk[cur]=true;render();}
+function nextQ(){if(cur<Q.length-1){cur++;render();}}
+function prevQ(){if(cur>0){cur--;render();}}
+
+function showResult(){
+  document.getElementById('scr-test').classList.remove('active');
+  document.getElementById('scr-result').classList.add('active');
+  const corr=ans.filter((a,i)=>a===Q[i].c).length;
+  const pct=Math.round(corr/Q.length*100);
+  const pass=corr>=37;
+  // Block scores
+  const bs=[0,0,0,0,0];
+  Q.forEach((q,i)=>{if(ans[i]===q.c)bs[Math.floor(i/10)]++;});
+  document.getElementById('result-content').innerHTML=`
+    <div style="font-size:60px;margin-bottom:12px">${pass?'🏆':'📚'}</div>
+    <div class="r-score ${pass?'r-pass':'r-fail'}">${corr}/${Q.length}</div>
+    <div style="font-size:17px;color:#555;margin-bottom:16px">${pct}% правильних відповідей</div>
+    <div style="display:inline-block;padding:8px 24px;border-radius:20px;font-weight:700;font-size:16px;background:${pass?'#eafaf1':'#fdf2f2'};color:${pass?'#1d6b3e':'#a93226'};margin-bottom:20px">${pass?'✅ ТЕСТ ПРОЙДЕНО!':'❌ Потрібно більше підготовки'}</div>
+    <div class="r-stats">
+      <div class="stat"><div class="sv" style="color:#27ae60">${corr}</div><div class="sl">Правильних</div></div>
+      <div class="stat"><div class="sv" style="color:#e74c3c">${Q.length-corr}</div><div class="sl">Помилок</div></div>
+      <div class="stat"><div class="sv" style="color:#1F4E79">${pct}%</div><div class="sl">Результат</div></div>
+    </div>
+    <div style="background:#f0f7ff;border-radius:12px;padding:16px;margin:16px 0;text-align:left">
+      <div style="font-weight:700;font-size:14px;color:#1F4E79;margin-bottom:10px">Результати по блоках:</div>
+      ${['iGaming/Fintech/Payments','Інструменти (Jira/Zendesk/Grafana)','API/SQL/Linux/Cloud','Anti-Fraud/AML/KYC','Процеси/SLA/Incidents'].map((n,i)=>`<div style="display:flex;justify-content:space-between;font-size:13px;padding:4px 0;border-bottom:1px solid #dce8f5"><span>${n}</span><span style="font-weight:700;color:${bs[i]>=7?'#27ae60':bs[i]>=5?'#e67e22':'#e74c3c'}">${bs[i]}/10</span></div>`).join('')}
+    </div>
+    <p style="color:#555;font-size:14px;margin-bottom:16px">${pass?'Відмінна підготовка! Ви знаєте інструменти та процеси iGaming/Fintech Support.':'Прохідний бал — 37/50. Повторіть слабкі блоки та спробуйте ще раз.'}</p>
+    <button class="rbtn" onclick="restartTest()">🔄 Пройти ще раз</button>`;
+}
+
+function restartTest(){
+  cur=0;ans=new Array(Q.length).fill(null);chk=new Array(Q.length).fill(false);
+  document.getElementById('scr-result').classList.remove('active');
+  document.getElementById('scr-test').classList.add('active');
+  render();
+}
+</script>
+</body>
+</html>
